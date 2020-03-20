@@ -1,9 +1,8 @@
 import React from 'react';
 import Draggable from 'react-draggable';
-import { darkPrimary, lightPrimary } from './colors';
-import Board from './Board';
-import Disc from './Disc';
 import styled from 'styled-components';
+import { darkPrimary, lightPrimary } from './colors';
+import { Board, Disc } from './components';
 
 const App = () => {
   const handleStart = e => e.target.classList.add('is-dragging');
@@ -76,7 +75,9 @@ const Court = styled.div`
 
     span {
       transition: transform 100ms ease-in-out;
-      &.is-dragging { transform: scale(2); }
+      &.is-dragging {
+        transform: scale(2);
+      }
     }
   }
 `;
