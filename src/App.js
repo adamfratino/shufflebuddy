@@ -76,7 +76,7 @@ const Court = styled.div`
 
     span {
       transition: transform 100ms ease-in-out;
-      &.is-dragging { transform: scale(2.5); }
+      &.is-dragging { transform: scale(2); }
     }
   }
 `;
