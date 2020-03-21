@@ -16,8 +16,9 @@ const StyledDisc = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 4px 0px black inset;
+  box-shadow: 0 0 6px 0px black inset;
   transition: transform 100ms ease-in-out;
+  position: relative;
 
   &.yellow { background: gold; }
   &.black { background: #444; }
@@ -27,6 +28,6 @@ const StyledDisc = styled.span`
     height: 70%;
     width: 70%;
     border-radius: 50%;
-    box-shadow: 0 0 7px 0 black inset;
+    box-shadow: 0 0 6px 1px black inset;
   }
 `;

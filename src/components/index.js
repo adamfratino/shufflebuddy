@@ -3,5 +3,5 @@ import Disc from './Disc';
 
 export {
   Board,
-  Disc
+  Disc,
 };

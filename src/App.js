@@ -1,10 +1,120 @@
-import React, { useState } from 'react';
+import React, { useState, createRef } from 'react';
 import Draggable from 'react-draggable';
 import styled from 'styled-components';
-import { darkPrimary, lightPrimary } from './colors';
+import { darkPrimary, lightPrimary, lightSecondary } from './colors';
 import { Board, Disc } from './components';
 
 const BISCUIT_SIZE = 50;
+const biscuitCoordParams = new URLSearchParams(window.location.search);
+
+const App = () => {
+  const linesCanvasRef = createRef();
+
+  const [position] = useState({
+    y1: {
+      x: biscuitCoordParams.has('y1') ? +biscuitCoordParams.get('y1').split('-')[0] : 10,
+      y: biscuitCoordParams.has('y1') ? +biscuitCoordParams.get('y1').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + 190),
+    },
+    y2: {
+      x: biscuitCoordParams.has('y2') ? +biscuitCoordParams.get('y2').split('-')[0] : 10,
+      y: biscuitCoordParams.has('y2') ? +biscuitCoordParams.get('y2').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + 130),
+    },
+    y3: {
+      x: biscuitCoordParams.has('y3') ? +biscuitCoordParams.get('y3').split('-')[0] : 10,
+      y: biscuitCoordParams.has('y3') ? +biscuitCoordParams.get('y3').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + 70),
+    },
+    y4: {
+      x: biscuitCoordParams.has('y4') ? +biscuitCoordParams.get('y4').split('-')[0] : 10,
+      y: biscuitCoordParams.has('y4') ? +biscuitCoordParams.get('y4').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + 10),
+    },
+    b1: {
+      x: biscuitCoordParams.has('b1') ? +biscuitCoordParams.get('b1').split('-')[0] : widthDetection(),
+      y: biscuitCoordParams.has('b1') ? +biscuitCoordParams.get('b1').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + 190),
+    },
+    b2: {
+      x: biscuitCoordParams.has('b2') ? +biscuitCoordParams.get('b2').split('-')[0] : widthDetection(),
+      y: biscuitCoordParams.has('b2') ? +biscuitCoordParams.get('b2').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + 130),
+    },
+    b3: {
+      x: biscuitCoordParams.has('b3') ? +biscuitCoordParams.get('b3').split('-')[0] : widthDetection(),
+      y: biscuitCoordParams.has('b3') ? +biscuitCoordParams.get('b3').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + 70),
+    },
+    b4: {
+      x: biscuitCoordParams.has('b4') ? +biscuitCoordParams.get('b4').split('-')[0] : widthDetection(),
+      y: biscuitCoordParams.has('b4') ? +biscuitCoordParams.get('b4').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + 10),
+    }
+  });
+
+  const biscuits = Object.entries(position);
+
+  const handleStart = (e, el) => {
+    const biscuitName = e.target.dataset.biscuit;
+    const biscuitLine = document.querySelector(`.${biscuitName}`);
+
+    if (biscuitLine) {
+      biscuitLine.remove();
+    }
+
+    linesCanvasRef.current.innerHTML += `
+      <svg class="${biscuitName}">
+        <line
+          stroke-width="3px"
+          stroke-dasharray="5px"
+          stroke="${lightSecondary}"
+          x1="${el.x + BISCUIT_SIZE/2}"
+          y1="${el.y + BISCUIT_SIZE/2}"
+          x2="${el.x + BISCUIT_SIZE/2}"
+          y2="${el.y + BISCUIT_SIZE/2}"
+        />
+      </svg>
+    `;
+  };
+
+  const handleStop = (e, el) => {
+    const biscuit = e.target.dataset.biscuit;
+
+    biscuitCoordParams.set(biscuit, `${el.x}-${el.y}`);
+  };
+
+  const handleDrag = (e, el) => {
+    const biscuitName = e.target.dataset.biscuit;
+    const biscuitLine = document.querySelector(`.${biscuitName}`);
+
+    if (biscuitLine) {
+      biscuitLine.querySelector('line').setAttribute('x2', el.x + 25);
+      biscuitLine.querySelector('line').setAttribute('y2', el.y + 25);
+    }
+  }
+
+  return (
+    <Container>
+      <Court>
+        <LinesCanvas ref={linesCanvasRef} />
+        {biscuits.map(biscuit =>
+          <Draggable
+            bounds="parent"
+            defaultPosition={{ x: biscuit[1].x, y: biscuit[1].y }}
+            onStart={handleStart}
+            onStop={handleStop}
+            onDrag={handleDrag}
+            key={biscuit[0]}
+          >
+            <div className="biscuit-container">
+              <Disc
+                className={biscuit[0].includes('y') ? 'yellow' : 'black'}
+                biscuit={biscuit[0]}
+              />
+            </div>
+          </Draggable>
+        )};
+        <Board />
+        <CopyButton onClick={copyToClipboard}>Copy Link</CopyButton>
+      </Court>
+    </Container>
+  );
+};
+
+export default App;
 
 const widthDetection = () => {
   if (window.innerWidth > 620) {
@@ -14,117 +124,18 @@ const widthDetection = () => {
   }
 };
 
-const App = () => {
-  const biscuitCoordParams = new URLSearchParams(window.location.search);
-
-  const copyToClipboard = () => {
-    const str = `${window.location}?${biscuitCoordParams}`
-    const el = document.createElement('textarea');
-    el.value = str;
-    el.setAttribute('readonly', '');
-    el.style.position = 'absolute';
-    el.style.left = '-9999px';
-    document.body.appendChild(el);
-    el.select();
-    document.execCommand('copy');
-    document.body.removeChild(el);
-  };
-
-
-  const [position] = useState({
-    y1x: biscuitCoordParams.has('y1') ? +biscuitCoordParams.get('y1').split('-')[0] : 10,
-    y1y: biscuitCoordParams.has('y1') ? +biscuitCoordParams.get('y1').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + 190),
-    y2x: biscuitCoordParams.has('y2') ? +biscuitCoordParams.get('y2').split('-')[0] : 10,
-    y2y: biscuitCoordParams.has('y2') ? +biscuitCoordParams.get('y2').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + 130),
-    y3x: biscuitCoordParams.has('y3') ? +biscuitCoordParams.get('y3').split('-')[0] : 10,
-    y3y: biscuitCoordParams.has('y3') ? +biscuitCoordParams.get('y3').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + 70),
-    y4x: biscuitCoordParams.has('y4') ? +biscuitCoordParams.get('y4').split('-')[0] : 10,
-    y4y: biscuitCoordParams.has('y4') ? +biscuitCoordParams.get('y4').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + 10),
-    b1x: biscuitCoordParams.has('b1') ? +biscuitCoordParams.get('b1').split('-')[0] : widthDetection(),
-    b1y: biscuitCoordParams.has('b1') ? +biscuitCoordParams.get('b1').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + 190),
-    b2x: biscuitCoordParams.has('b2') ? +biscuitCoordParams.get('b2').split('-')[0] : widthDetection(),
-    b2y: biscuitCoordParams.has('b2') ? +biscuitCoordParams.get('b2').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + 130),
-    b3x: biscuitCoordParams.has('b3') ? +biscuitCoordParams.get('b3').split('-')[0] : widthDetection(),
-    b3y: biscuitCoordParams.has('b3') ? +biscuitCoordParams.get('b3').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + 70),
-    b4x: biscuitCoordParams.has('b4') ? +biscuitCoordParams.get('b4').split('-')[0] : widthDetection(),
-    b4y: biscuitCoordParams.has('b4') ? +biscuitCoordParams.get('b4').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + 10),
-  });
-
-  const handleStop = (e, el) => {
-    const biscuitName = e.target.dataset.biscuit;
-    biscuitCoordParams.set(biscuitName, `${el.x}-${el.y}`);
-    // copyToClipboard(${window.location.pathname}?${biscuitCoordParams});
-    // window.history.replaceState({}, '', `${window.location.pathname}?${biscuitCoordParams}`);
-    console.log(`${window.location}?${biscuitCoordParams}`)
-  };
-
-  return (
-    <Container>
-      <Court>
-        <Draggable
-          bounds="parent"
-          defaultPosition={{ x: position.y1x, y: position.y1y }}
-          onStop={handleStop}
-        >
-          <div><Disc className="yellow" biscuit="y1" /></div>
-        </Draggable>
-        <Draggable
-          bounds="parent"
-          defaultPosition={{ x: position.y2x, y: position.y2y }}
-          onStop={handleStop}
-        >
-          <div><Disc className="yellow" biscuit="y2" /></div>
-        </Draggable>
-        <Draggable
-          bounds="parent"
-          defaultPosition={{ x: position.y3x, y: position.y3y }}
-          onStop={handleStop}
-        >
-          <div><Disc className="yellow" biscuit="y3" /></div>
-        </Draggable>
-        <Draggable
-          bounds="parent"
-          defaultPosition={{ x: position.y4x, y: position.y4y }}
-          onStop={handleStop}
-        >
-          <div><Disc className="yellow" biscuit="y4" /></div>
-        </Draggable>
-        <Draggable
-          bounds="parent"
-          onStop={handleStop}
-          defaultPosition={{ x: position.b1x, y: position.b1y }}
-        >
-          <div><Disc className="black" biscuit="b1" /></div>
-        </Draggable>
-        <Draggable
-          bounds="parent"
-          onStop={handleStop}
-          defaultPosition={{ x: position.b2x, y: position.b2y }}
-        >
-          <div><Disc className="black" biscuit="b2" /></div>
-        </Draggable>
-        <Draggable
-          bounds="parent"
-          onStop={handleStop}
-          defaultPosition={{ x: position.b3x, y: position.b3y }}
-        >
-          <div><Disc className="black" biscuit="b3" /></div>
-        </Draggable>
-        <Draggable
-          bounds="parent"
-          onStop={handleStop}
-          defaultPosition={{ x: position.b4x, y: position.b4y }}
-        >
-          <div><Disc className="black" biscuit="b4" /></div>
-        </Draggable>
-        <Board />
-        <CopyButton onClick={copyToClipboard}>Copy Board Link</CopyButton>
-      </Court>
-    </Container>
-  );
+const copyToClipboard = () => {
+  const str = `${window.location}?${biscuitCoordParams}`
+  const el = document.createElement('textarea');
+  el.value = str;
+  el.setAttribute('readonly', '');
+  el.style.position = 'absolute';
+  el.style.left = '-9999px';
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand('copy');
+  document.body.removeChild(el);
 };
-
-export default App;
 
 const Container = styled.main`
   overflow: hidden;
@@ -147,20 +158,24 @@ const Court = styled.div`
     border: none;
   };
 
-  & > div {
+  .biscuit-container {
+    z-index: 10;
     position: absolute;
     & > span {
       height: ${BISCUIT_SIZE}px;
       width: ${BISCUIT_SIZE}px;
     }
     &.react-draggable-dragging > span {
-      transform: scale(2);
+      transform: scale(1.3);
     }
   }
 `;
 
 const CopyButton = styled.button`
-appearance: none;
+  appearance: none;
+  font-weight: 900;
+  border-radius: 3px;
+  text-transform: uppercase;
   position: absolute;
   bottom: 20px;
   left: 0;
@@ -169,5 +184,28 @@ appearance: none;
   padding: 10px 20px;
   width: 150px;
   display: inline-block;
-  background: beige;
+  background-color: white;
+  transition: background-color 150ms ease;
+  cursor: pointer;
+  &:hover {
+    background-color: beige;
+  }
+`;
+
+const LinesCanvas = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+
+  svg {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+  }
 `;
