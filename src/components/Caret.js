@@ -14,15 +14,14 @@ export default Caret;
 const CaretContainer = styled.div`
 display: flex;
 justify-content: center;
-align-items: flex-start;
-padding-top: 10px;
-height: 60px;
+align-items: center;
 overflow: hidden;
 cursor: pointer;
 
   svg {
+    margin-top: -10px;
     transition: transform 150ms ease-in-out;
     transform: scaleY(-1);
-    width: 40px;
+    width: 50px;
   }
 `;

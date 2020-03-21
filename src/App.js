@@ -5,47 +5,50 @@ import { darkPrimary, lightPrimary, lightSecondary } from './colors';
 import { Board, Caret, Disc } from './components';
 
 const BISCUIT_SIZE = 50;
+const COLLAPSED_MENU_HEIGHT = 80;
 const biscuitCoordParams = new URLSearchParams(window.location.search);
+const hasQueries = window.location.href.includes('?');
 
 const App = () => {
   const linesCanvasRef = createRef();
 
-  const [linesEnabled, setLinesEnabled] = useState(true);
+  const [linesEnabled, setLinesEnabled] = useState(false);
   const [resetToggle, setResetToggle] = useState(false);
   const [menuToggle, setMenuToggle] = useState(false);
+  const [copyUrlEnabled, setCopyUrlEnabled] = useState(hasQueries);
 
   const [position] = useState({
     y1: {
       x: biscuitCoordParams.has('y1') ? +biscuitCoordParams.get('y1').split('-')[0] : 10,
-      y: biscuitCoordParams.has('y1') ? +biscuitCoordParams.get('y1').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + 190),
+      y: biscuitCoordParams.has('y1') ? +biscuitCoordParams.get('y1').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + COLLAPSED_MENU_HEIGHT + 190),
     },
     y2: {
       x: biscuitCoordParams.has('y2') ? +biscuitCoordParams.get('y2').split('-')[0] : 10,
-      y: biscuitCoordParams.has('y2') ? +biscuitCoordParams.get('y2').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + 130),
+      y: biscuitCoordParams.has('y2') ? +biscuitCoordParams.get('y2').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + COLLAPSED_MENU_HEIGHT + 130),
     },
     y3: {
       x: biscuitCoordParams.has('y3') ? +biscuitCoordParams.get('y3').split('-')[0] : 10,
-      y: biscuitCoordParams.has('y3') ? +biscuitCoordParams.get('y3').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + 70),
+      y: biscuitCoordParams.has('y3') ? +biscuitCoordParams.get('y3').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + COLLAPSED_MENU_HEIGHT + 70),
     },
     y4: {
       x: biscuitCoordParams.has('y4') ? +biscuitCoordParams.get('y4').split('-')[0] : 10,
-      y: biscuitCoordParams.has('y4') ? +biscuitCoordParams.get('y4').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + 10),
+      y: biscuitCoordParams.has('y4') ? +biscuitCoordParams.get('y4').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + COLLAPSED_MENU_HEIGHT + 10),
     },
     b1: {
       x: biscuitCoordParams.has('b1') ? +biscuitCoordParams.get('b1').split('-')[0] : widthDetection(),
-      y: biscuitCoordParams.has('b1') ? +biscuitCoordParams.get('b1').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + 190),
+      y: biscuitCoordParams.has('b1') ? +biscuitCoordParams.get('b1').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + COLLAPSED_MENU_HEIGHT + 190),
     },
     b2: {
       x: biscuitCoordParams.has('b2') ? +biscuitCoordParams.get('b2').split('-')[0] : widthDetection(),
-      y: biscuitCoordParams.has('b2') ? +biscuitCoordParams.get('b2').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + 130),
+      y: biscuitCoordParams.has('b2') ? +biscuitCoordParams.get('b2').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + COLLAPSED_MENU_HEIGHT + 130),
     },
     b3: {
       x: biscuitCoordParams.has('b3') ? +biscuitCoordParams.get('b3').split('-')[0] : widthDetection(),
-      y: biscuitCoordParams.has('b3') ? +biscuitCoordParams.get('b3').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + 70),
+      y: biscuitCoordParams.has('b3') ? +biscuitCoordParams.get('b3').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + COLLAPSED_MENU_HEIGHT + 70),
     },
     b4: {
       x: biscuitCoordParams.has('b4') ? +biscuitCoordParams.get('b4').split('-')[0] : widthDetection(),
-      y: biscuitCoordParams.has('b4') ? +biscuitCoordParams.get('b4').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + 10),
+      y: biscuitCoordParams.has('b4') ? +biscuitCoordParams.get('b4').split('-')[1] : window.innerHeight - (BISCUIT_SIZE + COLLAPSED_MENU_HEIGHT + 10),
     }
   });
 
@@ -54,6 +57,8 @@ const App = () => {
   const handleStart = (e, el) => {
     const biscuitName = e.target.dataset.biscuit;
     const biscuitLine = document.querySelector(`.${biscuitName}`);
+
+    setCopyUrlEnabled(true);
 
     if (linesEnabled) {
       if (biscuitLine) {
@@ -78,7 +83,6 @@ const App = () => {
 
   const handleStop = (e, el) => {
     const biscuit = e.target.dataset.biscuit;
-
     biscuitCoordParams.set(biscuit, `${el.x}-${el.y}`);
   };
 
@@ -102,6 +106,7 @@ const App = () => {
   const resetBoard = () => {
     setResetToggle(!resetToggle);
     removeLines();
+    setCopyUrlEnabled(false);
   };
 
   const toggleMenu = () => {
@@ -136,7 +141,7 @@ const App = () => {
           <Button onClick={toggleLines}>
             {linesEnabled ? 'Disable Lines' : 'Enable Lines'}
           </Button>
-          <Button onClick={copyToClipboard}>Copy Link to Clipboard</Button>
+          <Button onClick={copyToClipboard} disabled={!copyUrlEnabled}>Copy Link to Clipboard</Button>
         </Menu>
       </Court>
     </Container>
@@ -154,7 +159,8 @@ const widthDetection = () => {
 };
 
 const copyToClipboard = () => {
-  const str = `${window.location}?${biscuitCoordParams}`
+  let str = `${window.location}?${biscuitCoordParams}`;
+
   const el = document.createElement('textarea');
   el.value = str;
   el.setAttribute('readonly', '');
@@ -229,7 +235,7 @@ const Menu = styled.nav`
   z-index: 1000;
   left: 0;
   right: 0;
-  transform: translate3d(0, calc(100% - 50px), 0);
+  transform: translate3d(0, calc(100% - ${COLLAPSED_MENU_HEIGHT}px), 0);
   transition: transform 150ms ease-in-out;
   &.is-open {
     transform: translate3d(0, 0, 0);
@@ -237,6 +243,10 @@ const Menu = styled.nav`
     svg {
       transform: scaleY(1);
     }
+  }
+
+  & > div:first-child {
+    height: ${COLLAPSED_MENU_HEIGHT}px;
   }
 `;
 
@@ -252,10 +262,20 @@ const Button = styled.button`
   background-color: ${lightSecondary};
   color: white;
   text-shadow: 0 0 5px black;
-  transition: background-color 150ms ease;
+  transition: all 150ms ease;
   cursor: pointer;
-  &:hover {
-    background-color: #ed2225;
+
+  &:focus, &:active { outline: none; }
+
+  &:not(:disabled) {
+    &:hover {
+      background-color: #ed2225;
+    }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
   }
 
   &:not(:last-of-type) {
