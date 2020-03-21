@@ -25,9 +25,9 @@ const StyledDisc = styled.span`
 
   & > span {
     pointer-events: none;
-    height: 70%;
-    width: 70%;
+    height: 60%;
+    width: 60%;
     border-radius: 50%;
-    box-shadow: 0 0 6px 1px black inset;
+    box-shadow: 0 0 11px -1px black inset;
   }
 `;

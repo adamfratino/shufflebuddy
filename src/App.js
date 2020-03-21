@@ -2,13 +2,17 @@ import React, { useState, createRef } from 'react';
 import Draggable from 'react-draggable';
 import styled from 'styled-components';
 import { darkPrimary, lightPrimary, lightSecondary } from './colors';
-import { Board, Disc } from './components';
+import { Board, Caret, Disc } from './components';
 
 const BISCUIT_SIZE = 50;
 const biscuitCoordParams = new URLSearchParams(window.location.search);
 
 const App = () => {
   const linesCanvasRef = createRef();
+
+  const [linesEnabled, setLinesEnabled] = useState(true);
+  const [resetToggle, setResetToggle] = useState(false);
+  const [menuToggle, setMenuToggle] = useState(false);
 
   const [position] = useState({
     y1: {
@@ -51,23 +55,25 @@ const App = () => {
     const biscuitName = e.target.dataset.biscuit;
     const biscuitLine = document.querySelector(`.${biscuitName}`);
 
-    if (biscuitLine) {
-      biscuitLine.remove();
-    }
+    if (linesEnabled) {
+      if (biscuitLine) {
+        biscuitLine.remove();
+      }
 
-    linesCanvasRef.current.innerHTML += `
-      <svg class="${biscuitName}">
-        <line
-          stroke-width="3px"
-          stroke-dasharray="5px"
-          stroke="${lightSecondary}"
-          x1="${el.x + BISCUIT_SIZE/2}"
-          y1="${el.y + BISCUIT_SIZE/2}"
-          x2="${el.x + BISCUIT_SIZE/2}"
-          y2="${el.y + BISCUIT_SIZE/2}"
-        />
-      </svg>
-    `;
+      linesCanvasRef.current.innerHTML += `
+        <svg class="${biscuitName}">
+          <line
+            stroke-width="3px"
+            stroke-dasharray="5px"
+            stroke="${lightSecondary}"
+            x1="${el.x + BISCUIT_SIZE/2}"
+            y1="${el.y + BISCUIT_SIZE/2}"
+            x2="${el.x + BISCUIT_SIZE/2}"
+            y2="${el.y + BISCUIT_SIZE/2}"
+          />
+        </svg>
+      `;
+    }
   };
 
   const handleStop = (e, el) => {
@@ -86,6 +92,22 @@ const App = () => {
     }
   }
 
+  const removeLines = () => linesCanvasRef.current.innerHTML = '';
+
+  const toggleLines = () => {
+    setLinesEnabled(!linesEnabled);
+    removeLines();
+  };
+
+  const resetBoard = () => {
+    setResetToggle(!resetToggle);
+    removeLines();
+  };
+
+  const toggleMenu = () => {
+    setMenuToggle(!menuToggle);
+  }
+
   return (
     <Container>
       <Court>
@@ -97,7 +119,7 @@ const App = () => {
             onStart={handleStart}
             onStop={handleStop}
             onDrag={handleDrag}
-            key={biscuit[0]}
+            key={`${biscuit[0]}_${resetToggle}`}
           >
             <div className="biscuit-container">
               <Disc
@@ -106,9 +128,16 @@ const App = () => {
               />
             </div>
           </Draggable>
-        )};
+        )}
         <Board />
-        <CopyButton onClick={copyToClipboard}>Copy Link</CopyButton>
+        <Menu className={menuToggle ? 'is-open' : ''}>
+          <Caret onClick={toggleMenu} />
+          <Button onClick={resetBoard}>Reset Biscuits</Button>
+          <Button onClick={toggleLines}>
+            {linesEnabled ? 'Disable Lines' : 'Enable Lines'}
+          </Button>
+          <Button onClick={copyToClipboard}>Copy Link to Clipboard</Button>
+        </Menu>
       </Court>
     </Container>
   );
@@ -151,8 +180,8 @@ const Court = styled.div`
   height: 100vh;
   max-width: 620px;
   box-shadow: 0 0 40px -10px black;
-  border-left: 20px solid white;
-  border-right: 20px solid white;
+  border-left: 20px solid beige;
+  border-right: 20px solid beige;
 
   @media (max-width: 620px) {
     border: none;
@@ -171,27 +200,6 @@ const Court = styled.div`
   }
 `;
 
-const CopyButton = styled.button`
-  appearance: none;
-  font-weight: 900;
-  border-radius: 3px;
-  text-transform: uppercase;
-  position: absolute;
-  bottom: 20px;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  padding: 10px 20px;
-  width: 150px;
-  display: inline-block;
-  background-color: white;
-  transition: background-color 150ms ease;
-  cursor: pointer;
-  &:hover {
-    background-color: beige;
-  }
-`;
-
 const LinesCanvas = styled.div`
   position: absolute;
   top: 0;
@@ -207,5 +215,50 @@ const LinesCanvas = styled.div`
     left: 0%;
     width: 100%;
     height: 100%;
+  }
+`;
+
+const Menu = styled.nav`
+  background-color: rgba(245, 245, 220, 0.8);
+  display: flex;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+  flex-direction: column;
+  padding: 0 20px 40px;
+  position: absolute;
+  bottom: 0;
+  z-index: 1000;
+  left: 0;
+  right: 0;
+  transform: translate3d(0, calc(100% - 50px), 0);
+  transition: transform 150ms ease-in-out;
+  &.is-open {
+    transform: translate3d(0, 0, 0);
+
+    svg {
+      transform: scaleY(1);
+    }
+  }
+`;
+
+const Button = styled.button`
+  appearance: none;
+  border: none;
+  font-weight: 900;
+  border-radius: 5px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  padding: 15px 20px;
+  display: inline-block;
+  background-color: ${lightSecondary};
+  color: white;
+  text-shadow: 0 0 5px black;
+  transition: background-color 150ms ease;
+  cursor: pointer;
+  &:hover {
+    background-color: #ed2225;
+  }
+
+  &:not(:last-of-type) {
+    margin-bottom: 20px;
   }
 `;
