@@ -1,29 +1,23 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 
-const Disc = (props) => (
-  <StyledDisc className={props.className}>
+const Disc = forwardRef((props, ref) => (
+  <StyledDisc className={props.className} data-biscuit={props.biscuit} ref={ref}>
     <span />
   </StyledDisc>
-);
+));
 
 export default Disc;
 
 const StyledDisc = styled.span`
   cursor: move;
   display: block;
-  width: 40px;
-  height: 40px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 0 4px 0px black inset;
-
-  @media (min-width: 767px) {
-    width: 50px;
-    height: 50px;
-  };
+  transition: transform 100ms ease-in-out;
 
   &.yellow { background: gold; }
   &.black { background: #444; }
