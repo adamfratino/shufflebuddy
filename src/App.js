@@ -12,7 +12,7 @@ const hasQueries = window.location.href.includes('?');
 const App = () => {
   const linesCanvasRef = createRef();
 
-  const [linesEnabled, setLinesEnabled] = useState(false);
+  const [linesEnabled, setLinesEnabled] = useState(true);
   const [resetToggle, setResetToggle] = useState(false);
   const [menuToggle, setMenuToggle] = useState(false);
   const [copyUrlEnabled, setCopyUrlEnabled] = useState(hasQueries);
@@ -58,6 +58,7 @@ const App = () => {
     const biscuitName = e.target.dataset.biscuit;
     const biscuitLine = document.querySelector(`.${biscuitName}`);
 
+
     setCopyUrlEnabled(true);
 
     if (linesEnabled) {
@@ -67,6 +68,12 @@ const App = () => {
 
       linesCanvasRef.current.innerHTML += `
         <svg class="${biscuitName}">
+          <circle
+            r="${BISCUIT_SIZE/2}"
+            cx="${el.x + BISCUIT_SIZE/2}"
+            cy="${el.y + BISCUIT_SIZE/2}"
+            fill="${e.target.classList.contains('yellow') ? 'yellow' : 'black'}"
+          />
           <line
             stroke-width="3px"
             stroke-dasharray="5px"
@@ -82,8 +89,8 @@ const App = () => {
   };
 
   const handleStop = (e, el) => {
-    const biscuit = e.target.dataset.biscuit;
-    biscuitCoordParams.set(biscuit, `${el.x}-${el.y}`);
+    const biscuitName = e.target.dataset.biscuit;
+    biscuitCoordParams.set(biscuitName, `${el.x}-${el.y}`);
   };
 
   const handleDrag = (e, el) => {
@@ -221,6 +228,10 @@ const LinesCanvas = styled.div`
     left: 0%;
     width: 100%;
     height: 100%;
+
+    circle {
+      opacity: 0.5;
+    }
   }
 `;
 
