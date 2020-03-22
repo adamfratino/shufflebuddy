@@ -1,7 +1,11 @@
 const copyToClipboard = params => {
-  let str = `${window.location}?${params}`;
-
+  const paramString = params.toString();
+  let str =
+    paramString !== ''
+      ? `${window.location.origin}?${params}`
+      : `${window.location.origin}`;
   const el = document.createElement('textarea');
+
   el.value = str;
   el.setAttribute('readonly', '');
   el.style.position = 'absolute';
