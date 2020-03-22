@@ -139,7 +139,7 @@ const App = () => {
     removeLines(linesCanvasRef.current);
   };
 
-  const resetBoard = () => {
+  const resetBiscuits = () => {
     setResetToggle(!resetToggle);
     removeLines(linesCanvasRef.current);
     setCopyUrlEnabled(false);
@@ -175,7 +175,7 @@ const App = () => {
         <Board />
         <Menu className={menuActive ? 'is-open' : ''}>
           <Caret onClick={toggleMenu} />
-          <Button onClick={resetBoard}>Reset Biscuits</Button>
+          <Button onClick={resetBiscuits}>Reset Biscuits</Button>
           <Button onClick={() => toggleLines(linesEnabled)}>
             {linesEnabled ? 'Disable Lines' : 'Enable Lines'}
           </Button>
@@ -185,6 +185,7 @@ const App = () => {
           >
             Copy Link to Clipboard
           </Button>
+          <Button>Clear Board</Button>
         </Menu>
       </Court>
     </Container>

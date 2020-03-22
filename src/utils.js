@@ -1,12 +1,4 @@
-import { BOARD_MAX_WIDTH, BISCUIT_SIZE, COLLAPSED_MENU_HEIGHT } from './variables';
-
-export const widthDetection = () => {
-  if (window.innerWidth > BOARD_MAX_WIDTH) {
-    return BOARD_MAX_WIDTH - 60;
-  } else {
-    return window.innerWidth - (BISCUIT_SIZE + 10);
-  }
-};
+import { BOARD_WIDTH, BISCUIT_SIZE, COLLAPSED_MENU_HEIGHT } from './variables';
 
 export const copyToClipboard = params => {
   let str = `${window.location}?${params}`;
@@ -24,7 +16,7 @@ export const copyToClipboard = params => {
 
 export const defaultPositions = () => {
   const positions = {};
-  const containerWidth = widthDetection();
+  const containerWidth = BOARD_WIDTH;
 
   for (let i = 0; i < 8; i++) {
     const isYellow = i < 4;
