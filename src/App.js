@@ -3,85 +3,19 @@ import Draggable from 'react-draggable';
 import { lightSecondary, BISCUIT_SIZE } from './variables';
 import { Container, Court, LinesCanvas, BiscuitContainer, Menu, Button } from './styles';
 import { Board, Caret, Disc } from './components';
-import { copyToClipboard, defaultPositions, removeLines } from './utils';
+import { copyToClipboard, loadPositions, removeLines } from './utils';
 
 const biscuitCoordParams = new URLSearchParams(window.location.search);
 const hasQueries = window.location.href.includes('?');
 
 const App = () => {
   const linesCanvasRef = createRef();
-  const defaultPos = defaultPositions();
+  const loadedPositions = loadPositions(biscuitCoordParams);
 
   const [linesEnabled, setLinesEnabled] = useState(true);
   const [resetToggle, setResetToggle] = useState(false);
   const [menuActive, setMenuActive] = useState(false);
   const [copyUrlEnabled, setCopyUrlEnabled] = useState(hasQueries);
-  const [positionOnLoad] = useState({
-    y1: {
-      x: biscuitCoordParams.has('y1')
-        ? +biscuitCoordParams.get('y1').split('-')[0]
-        : defaultPos.y1.x,
-      y: biscuitCoordParams.has('y1')
-        ? +biscuitCoordParams.get('y1').split('-')[1]
-        : defaultPos.y1.y,
-    },
-    y2: {
-      x: biscuitCoordParams.has('y2')
-        ? +biscuitCoordParams.get('y2').split('-')[0]
-        : defaultPos.y2.x,
-      y: biscuitCoordParams.has('y2')
-        ? +biscuitCoordParams.get('y2').split('-')[1]
-        : defaultPos.y2.y,
-    },
-    y3: {
-      x: biscuitCoordParams.has('y3')
-        ? +biscuitCoordParams.get('y3').split('-')[0]
-        : defaultPos.y3.x,
-      y: biscuitCoordParams.has('y3')
-        ? +biscuitCoordParams.get('y3').split('-')[1]
-        : defaultPos.y3.y,
-    },
-    y4: {
-      x: biscuitCoordParams.has('y4')
-        ? +biscuitCoordParams.get('y4').split('-')[0]
-        : defaultPos.y4.x,
-      y: biscuitCoordParams.has('y4')
-        ? +biscuitCoordParams.get('y4').split('-')[1]
-        : defaultPos.y4.y,
-    },
-    b1: {
-      x: biscuitCoordParams.has('b1')
-        ? +biscuitCoordParams.get('b1').split('-')[0]
-        : defaultPos.b1.x,
-      y: biscuitCoordParams.has('b1')
-        ? +biscuitCoordParams.get('b1').split('-')[1]
-        : defaultPos.b1.y,
-    },
-    b2: {
-      x: biscuitCoordParams.has('b2')
-        ? +biscuitCoordParams.get('b2').split('-')[0]
-        : defaultPos.b2.x,
-      y: biscuitCoordParams.has('b2')
-        ? +biscuitCoordParams.get('b2').split('-')[1]
-        : defaultPos.b2.y,
-    },
-    b3: {
-      x: biscuitCoordParams.has('b3')
-        ? +biscuitCoordParams.get('b3').split('-')[0]
-        : defaultPos.b3.x,
-      y: biscuitCoordParams.has('b3')
-        ? +biscuitCoordParams.get('b3').split('-')[1]
-        : defaultPos.b3.y,
-    },
-    b4: {
-      x: biscuitCoordParams.has('b4')
-        ? +biscuitCoordParams.get('b4').split('-')[0]
-        : defaultPos.b4.x,
-      y: biscuitCoordParams.has('b4')
-        ? +biscuitCoordParams.get('b4').split('-')[1]
-        : defaultPos.b4.y,
-    },
-  });
 
   const handleStart = (e, el) => {
     const biscuitName = e.target.dataset.biscuit;
@@ -149,7 +83,7 @@ const App = () => {
     setMenuActive(!menuActive);
   };
 
-  const biscuits = Object.entries(positionOnLoad);
+  const biscuits = Object.entries(loadedPositions);
 
   return (
     <Container>
