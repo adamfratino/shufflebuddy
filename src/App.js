@@ -1,7 +1,7 @@
 import React, { useState, createRef } from 'react';
 import Draggable from 'react-draggable';
-import { Container, Court, LinesCanvas, BiscuitContainer, Menu, Button } from './styles';
-import { Board, Caret, Disc } from './components';
+import { BiscuitContainer, Button, Container, Court, Menu } from './styled';
+import { Board, Caret, Disc, LinesCanvas } from './components';
 import {
   copyToClipboard,
   createLine,
@@ -80,7 +80,9 @@ const App = () => {
         <Board />
         <Menu className={menuActive ? 'is-open' : ''}>
           <Caret onClick={() => setMenuActive(!menuActive)} />
-          <Button onClick={resetBiscuits}>Reset Biscuits</Button>
+          <Button onClick={resetBiscuits} disabled={false}>
+            Reset Biscuits
+          </Button>
           <Button onClick={() => toggleLines(linesEnabled)}>
             {linesEnabled ? 'Disable Lines' : 'Enable Lines'}
           </Button>

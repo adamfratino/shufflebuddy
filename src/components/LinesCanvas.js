@@ -1,6 +1,13 @@
+import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 
-export const LinesCanvas = styled.div`
+const LinesCanvas = forwardRef((props, ref) => (
+  <StyledLinesCanvas className={props.className} ref={ref} />
+));
+
+export default LinesCanvas;
+
+const StyledLinesCanvas = styled.div`
   position: absolute;
   top: 0;
   left: 0;

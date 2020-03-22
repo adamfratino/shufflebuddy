@@ -2,7 +2,6 @@ import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 
 // Biscuits are 6" in diameter
-
 const Disc = forwardRef((props, ref) => (
   <StyledDisc className={props.className} data-biscuit={props.biscuit} ref={ref}>
     <span />
@@ -22,8 +21,12 @@ const StyledDisc = styled.span`
   transition: transform 100ms ease-in-out;
   position: relative;
 
-  &.yellow { background: #fdd835; }
-  &.black { background: #444; }
+  &.yellow {
+    background: #fdd835;
+  }
+  &.black {
+    background: #444;
+  }
 
   & > span {
     pointer-events: none;
