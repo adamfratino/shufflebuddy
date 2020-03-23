@@ -20,11 +20,13 @@ const App = () => {
   const linesCanvasRef = createRef();
   const [currentPositions, setCurrentPositions] = useState({ ...LOADED_POSITIONS });
 
+  // probably best to combine these into one state object
   const [linesEnabled, setLinesEnabled] = useState(true);
   const [resetToggle, setResetToggle] = useState(false);
   const [menuActive, setMenuActive] = useState(false);
   const [copyUrlEnabled, setCopyUrlEnabled] = useState(false);
-  const [isInitialBoard, setIsInitialBoard] = useState(true);
+  const [isInitialBoard, setIsInitialBoard] = useState(!hasQueries ? true : false);
+  const [hasMoved, setHasMoved] = useState(false);
 
   const handleStart = (e, el) => {
     const biscuitName = e.target.dataset.biscuit;
@@ -37,6 +39,8 @@ const App = () => {
 
     setCopyUrlEnabled(true);
   };
+
+  console.log(hasMoved);
 
   const handleStop = (e, el) => {
     const biscuitName = e.target.dataset.biscuit;
@@ -59,6 +63,9 @@ const App = () => {
       ...currentPositions,
       [`${biscuitName}`]: { x: x, y: y },
     });
+
+    setIsInitialBoard(false);
+    setHasMoved(true);
   };
 
   const toggleLines = isLineEnabled => {
@@ -71,7 +78,8 @@ const App = () => {
     setResetToggle(!resetToggle);
     removeLines(linesCanvasRef.current);
     setCopyUrlEnabled(false);
-    setIsInitialBoard(true);
+    setIsInitialBoard(!hasQueries ? true : false);
+    setHasMoved(false);
   };
 
   const clearBoard = () => {
@@ -87,7 +95,8 @@ const App = () => {
     });
 
     setCopyUrlEnabled(false);
-    hasQueries ? setIsInitialBoard(false) : setIsInitialBoard(true);
+    setHasMoved(true);
+    setIsInitialBoard(true);
   };
 
   const biscuits = Object.entries(LOADED_POSITIONS);
@@ -122,7 +131,7 @@ const App = () => {
         <Menu className={menuActive ? 'is-open' : ''}>
           <Caret onClick={() => setMenuActive(!menuActive)} />
           {hasQueries && (
-            <Button onClick={resetBiscuits} disabled={isInitialBoard ? true : false}>
+            <Button onClick={resetBiscuits} disabled={!hasMoved}>
               Reset Biscuits
             </Button>
           )}
@@ -135,10 +144,7 @@ const App = () => {
           >
             Copy Link to Clipboard
           </Button>
-          <Button
-            onClick={clearBoard}
-            disabled={hasQueries ? !isInitialBoard : isInitialBoard}
-          >
+          <Button onClick={clearBoard} disabled={isInitialBoard}>
             Clear Board
           </Button>
         </Menu>
