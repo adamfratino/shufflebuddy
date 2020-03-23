@@ -11,7 +11,8 @@ import {
   setLineCoords,
 } from './utils';
 
-const biscuitCoordParams = new URLSearchParams(window.location.search);
+let biscuitCoordParams = new URLSearchParams(window.location.search);
+const originalCoordParams = new URLSearchParams(window.location.search).toString();
 const DEFAULT_POSITIONS = defaultPositions();
 const LOADED_POSITIONS = loadPositions(biscuitCoordParams);
 const hasQueries = window.location.href.includes('?');
@@ -39,8 +40,6 @@ const App = () => {
 
     setCopyUrlEnabled(true);
   };
-
-  console.log(hasMoved);
 
   const handleStop = (e, el) => {
     const biscuitName = e.target.dataset.biscuit;
@@ -74,6 +73,7 @@ const App = () => {
   };
 
   const resetBiscuits = () => {
+    biscuitCoordParams = new URLSearchParams(originalCoordParams);
     setCurrentPositions({ ...LOADED_POSITIONS });
     setResetToggle(!resetToggle);
     removeLines(linesCanvasRef.current);
@@ -83,17 +83,9 @@ const App = () => {
   };
 
   const clearBoard = () => {
+    biscuitCoordParams = new URLSearchParams('');
     setCurrentPositions({ ...DEFAULT_POSITIONS });
     removeLines(linesCanvasRef.current);
-
-    biscuits.forEach(biscuit => {
-      const biscuitName = biscuit[0];
-
-      if (biscuitCoordParams.has(biscuitName)) {
-        biscuitCoordParams.delete(biscuitName);
-      }
-    });
-
     setCopyUrlEnabled(false);
     setHasMoved(true);
     setIsInitialBoard(true);
