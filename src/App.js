@@ -22,7 +22,7 @@ const App = () => {
   const [currentPositions, setCurrentPositions] = useState({ ...LOADED_POSITIONS });
 
   // probably best to combine these into one state object
-  const [linesEnabled, setLinesEnabled] = useState(true);
+  const [linesEnabled, setLinesEnabled] = useState(false);
   const [resetToggle, setResetToggle] = useState(false);
   const [menuActive, setMenuActive] = useState(false);
   const [copyUrlEnabled, setCopyUrlEnabled] = useState(false);
