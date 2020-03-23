@@ -13,6 +13,8 @@ export const BiscuitContainer = styled.div`
   }
   &.is-disabled {
     pointer-events: none;
-    opacity: 0.5;
+    & > span {
+      background-color: rgba(0, 0, 0, 0.75) !important;
+    }
   }
 `;

@@ -1,4 +1,4 @@
-import { BISCUIT_SIZE, lightSecondary } from '../variables';
+import { BISCUIT_SIZE } from '../variables';
 
 const createLine = (ref, name, color, x, y) => {
   const biscuitLine = document.querySelector(`.${name}`);
@@ -13,12 +13,11 @@ const createLine = (ref, name, color, x, y) => {
         r="${BISCUIT_SIZE / 2}"
         cx="${x + BISCUIT_SIZE / 2}"
         cy="${y + BISCUIT_SIZE / 2}"
-        fill="${color}"
+        class="${color}"
       />
       <line
         stroke-width="3px"
         stroke-dasharray="5px"
-        stroke="${lightSecondary}"
         x1="${x + BISCUIT_SIZE / 2}"
         y1="${y + BISCUIT_SIZE / 2}"
         x2="${x + BISCUIT_SIZE / 2}"

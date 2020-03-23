@@ -18,7 +18,7 @@ const StyledDisc = styled.span`
   align-items: center;
   justify-content: center;
   box-shadow: 0 0 6px 0px black inset;
-  transition: transform 100ms ease-in-out;
+  transition: all 100ms ease-in-out;
   position: relative;
 
   &.yellow {
