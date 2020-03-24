@@ -45,7 +45,7 @@ const App = () => {
     const biscuitName = e.target.dataset.biscuit;
     const { x, y } = el;
 
-    biscuitCoordParams.set(biscuitName, `${x}-${y}`);
+    biscuitCoordParams.set(biscuitName, `${x.toFixed(0)}-${y.toFixed(0)}`);
     setIsInitialBoard(false);
   };
 
