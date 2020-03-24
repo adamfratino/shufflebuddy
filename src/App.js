@@ -1,7 +1,7 @@
 import React, { useState, useEffect, createRef } from 'react';
 import Draggable from 'react-draggable';
-import { BiscuitContainer, Button, Container, Court, Menu } from './styled';
-import { Board, Caret, Disc, LinesCanvas } from './components';
+import { BiscuitContainer, Button, Court, Menu } from './styled';
+import { Caret, Disc, LinesCanvas } from './components';
 import {
   copyToClipboard,
   createLine,
@@ -95,53 +95,50 @@ const App = () => {
   useEffect(() => setCurrentPositions(LOADED_POSITIONS), []);
 
   return (
-    <Container>
-      <Court>
-        <LinesCanvas ref={linesCanvasRef} className={menuActive ? 'is-disabled' : ''} />
-        {biscuits.map(biscuit => (
-          <Draggable
-            bounds="parent"
-            defaultPosition={{ x: biscuit[1].x, y: biscuit[1].y }}
-            position={{
-              x: currentPositions[biscuit[0]].x,
-              y: currentPositions[biscuit[0]].y,
-            }}
-            onStart={handleStart}
-            onStop={handleStop}
-            onDrag={handleDrag}
-            key={`${biscuit[0]}_${resetToggle}`}
-          >
-            <BiscuitContainer className={menuActive ? 'is-disabled' : ''}>
-              <Disc
-                className={biscuit[0].includes('y') ? 'yellow' : 'black'}
-                biscuit={biscuit[0]}
-              />
-            </BiscuitContainer>
-          </Draggable>
-        ))}
-        <Board />
-        <Menu className={menuActive ? 'is-open' : ''}>
-          <Caret onClick={() => setMenuActive(!menuActive)} />
-          {hasQueries && (
-            <Button onClick={resetBiscuits} disabled={!hasMoved}>
-              Reset Biscuits
-            </Button>
-          )}
-          <Button onClick={() => toggleLines(linesEnabled)}>
-            {linesEnabled ? 'Disable Lines' : 'Enable Lines'}
+    <Court>
+      <LinesCanvas ref={linesCanvasRef} className={menuActive ? 'is-disabled' : ''} />
+      {biscuits.map(biscuit => (
+        <Draggable
+          bounds="parent"
+          defaultPosition={{ x: biscuit[1].x, y: biscuit[1].y }}
+          position={{
+            x: currentPositions[biscuit[0]].x,
+            y: currentPositions[biscuit[0]].y,
+          }}
+          onStart={handleStart}
+          onStop={handleStop}
+          onDrag={handleDrag}
+          key={`${biscuit[0]}_${resetToggle}`}
+        >
+          <BiscuitContainer className={menuActive ? 'is-disabled' : ''}>
+            <Disc
+              className={biscuit[0].includes('y') ? 'yellow' : 'black'}
+              biscuit={biscuit[0]}
+            />
+          </BiscuitContainer>
+        </Draggable>
+      ))}
+      <Menu className={menuActive ? 'is-open' : ''}>
+        <Caret onClick={() => setMenuActive(!menuActive)} />
+        {hasQueries && (
+          <Button onClick={resetBiscuits} disabled={!hasMoved}>
+            Reset Biscuits
           </Button>
-          <Button
-            onClick={() => copyToClipboard(biscuitCoordParams)}
-            disabled={!copyUrlEnabled}
-          >
-            Copy Link to Clipboard
-          </Button>
-          <Button onClick={clearBoard} disabled={isInitialBoard}>
-            Clear Board
-          </Button>
-        </Menu>
-      </Court>
-    </Container>
+        )}
+        <Button onClick={() => toggleLines(linesEnabled)}>
+          {linesEnabled ? 'Disable Lines' : 'Enable Lines'}
+        </Button>
+        <Button
+          onClick={() => copyToClipboard(biscuitCoordParams)}
+          disabled={!copyUrlEnabled}
+        >
+          Copy Link to Clipboard
+        </Button>
+        <Button onClick={clearBoard} disabled={isInitialBoard}>
+          Clear Board
+        </Button>
+      </Menu>
+    </Court>
   );
 };
 
