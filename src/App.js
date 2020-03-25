@@ -92,7 +92,10 @@ const App = () => {
   };
 
   const biscuits = Object.entries(LOADED_POSITIONS);
-  useEffect(() => setCurrentPositions(LOADED_POSITIONS), []);
+  useEffect(() => {
+    setCurrentPositions(LOADED_POSITIONS);
+    document.querySelector('#board').style.opacity = 1;
+  }, []);
 
   return (
     <Court>
