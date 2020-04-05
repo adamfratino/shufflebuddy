@@ -17,6 +17,7 @@ export const BiscuitContainer = styled.div`
   }
 
   &.react-draggable-dragging {
+    z-index: 20;
     &::before {
       content: '';
       position: absolute;
