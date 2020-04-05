@@ -65,3 +65,8 @@ body {
 .board svg .kitchen-triangle {
   fill: black;
 }
+/* 
+.board .scoring-area * {
+  stroke: none;
+  fill: gold;
+} */
