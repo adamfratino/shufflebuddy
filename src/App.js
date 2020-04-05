@@ -1,7 +1,7 @@
 import React, { useState, useEffect, createRef } from 'react';
 import Draggable from 'react-draggable';
 import { BiscuitContainer, Button, Court, Menu } from './styled';
-import { Caret, Disc, LinesCanvas } from './components';
+import { Caret, Disc, LinesCanvas, ShootingArea } from './components';
 import {
   copyToClipboard,
   createLine,
@@ -22,6 +22,7 @@ const App = () => {
   const [currentPositions, setCurrentPositions] = useState({ ...LOADED_POSITIONS });
 
   // probably best to combine these into one state object
+  const [shootingAreaEnabled, setShootingAreaEnabled] = useState(false);
   const [linesEnabled, setLinesEnabled] = useState(false);
   const [resetToggle, setResetToggle] = useState(false);
   const [menuActive, setMenuActive] = useState(false);
@@ -67,7 +68,7 @@ const App = () => {
     setHasMoved(true);
   };
 
-  const toggleLines = isLineEnabled => {
+  const toggleLines = (isLineEnabled) => {
     setLinesEnabled(!isLineEnabled);
     removeLines(linesCanvasRef.current);
   };
@@ -92,6 +93,7 @@ const App = () => {
   };
 
   const biscuits = Object.entries(LOADED_POSITIONS);
+
   useEffect(() => {
     setCurrentPositions(LOADED_POSITIONS);
     document.querySelector('#board').style.opacity = 1;
@@ -100,7 +102,7 @@ const App = () => {
   return (
     <Court>
       <LinesCanvas ref={linesCanvasRef} className={menuActive ? 'is-disabled' : ''} />
-      {biscuits.map(biscuit => (
+      {biscuits.map((biscuit) => (
         <Draggable
           bounds="parent"
           defaultPosition={{ x: biscuit[1].x, y: biscuit[1].y }}
@@ -123,14 +125,17 @@ const App = () => {
       ))}
       <Menu className={menuActive ? 'is-open' : ''}>
         <Caret onClick={() => setMenuActive(!menuActive)} />
+        <Button onClick={() => toggleLines(linesEnabled)}>
+          {linesEnabled ? 'Disable Lines' : 'Enable Lines'}
+        </Button>
+        <Button onClick={() => setShootingAreaEnabled(!shootingAreaEnabled)}>
+          {shootingAreaEnabled ? 'Disable Shooting Area' : 'Enable Shooting Area'}
+        </Button>
         {hasQueries && (
           <Button onClick={resetBiscuits} disabled={!hasMoved}>
             Reset Biscuits
           </Button>
         )}
-        <Button onClick={() => toggleLines(linesEnabled)}>
-          {linesEnabled ? 'Disable Lines' : 'Enable Lines'}
-        </Button>
         <Button
           onClick={() => copyToClipboard(biscuitCoordParams)}
           disabled={!copyUrlEnabled}
@@ -141,6 +146,7 @@ const App = () => {
           Clear Board
         </Button>
       </Menu>
+      <ShootingArea isEnabled={shootingAreaEnabled} />
     </Court>
   );
 };

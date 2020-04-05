@@ -22,8 +22,14 @@ const defaultPositions = () => {
     const isYellow = i < 4;
     const color = isYellow ? 'y' : 'b';
     const count = i % 4;
-    const yellowX = sizing.gutter + BISCUIT_SIZE * count + 5 * count;
-    const blackX = sizing.board - BISCUIT_SIZE * (count + 1) - sizing.gutter - count * 5;
+    const yellowX =
+      sizing.board / 2 -
+      (BISCUIT_SIZE + sizing.board / 16.5) -
+      (BISCUIT_SIZE * count + 5 * count);
+    const blackX =
+      sizing.board / 2 +
+      (BISCUIT_SIZE + sizing.board / 16.5) +
+      (BISCUIT_SIZE * (count - 1) + 5 * count);
 
     positions[color + (count + 1)] = {
       x: isYellow ? yellowX : blackX,
