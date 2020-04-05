@@ -45,7 +45,7 @@ const SVGContainer = styled.div`
   }
 
   .box {
-    stroke: rgba(0, 0, 0, 0.75);
+    stroke: rgba(0, 0, 0, 0.65);
     fill: rgba(0, 0, 0, 0.25);
   }
 

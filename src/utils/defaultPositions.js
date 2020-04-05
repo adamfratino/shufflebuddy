@@ -33,7 +33,7 @@ const defaultPositions = () => {
 
     positions[color + (count + 1)] = {
       x: isYellow ? yellowX : blackX,
-      y: window.innerHeight - (BISCUIT_SIZE + COLLAPSED_MENU_HEIGHT + 10),
+      y: window.innerHeight - (BISCUIT_SIZE + COLLAPSED_MENU_HEIGHT + 20),
     };
   }
 

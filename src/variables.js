@@ -9,5 +9,3 @@ export const COLLAPSED_MENU_HEIGHT = 50;
 export const BOARD_MAX_WIDTH = 650;
 export const BOARD_WIDTH = boardFrame.getBoundingClientRect().width;
 export const BISCUIT_SIZE = invisibleBiscuit.getBoundingClientRect().width;
-
-console.log(BOARD_WIDTH);
