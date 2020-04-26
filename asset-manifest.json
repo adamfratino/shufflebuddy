@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/shuffleboard-history/static/css/main.452a58c1.chunk.css",
-    "main.js": "/shuffleboard-history/static/js/main.6d2f232c.chunk.js",
-    "main.js.map": "/shuffleboard-history/static/js/main.6d2f232c.chunk.js.map",
-    "runtime-main.js": "/shuffleboard-history/static/js/runtime-main.54cf700a.js",
-    "runtime-main.js.map": "/shuffleboard-history/static/js/runtime-main.54cf700a.js.map",
-    "static/js/2.ce8228a0.chunk.js": "/shuffleboard-history/static/js/2.ce8228a0.chunk.js",
-    "static/js/2.ce8228a0.chunk.js.map": "/shuffleboard-history/static/js/2.ce8228a0.chunk.js.map",
-    "index.html": "/shuffleboard-history/index.html",
-    "precache-manifest.cb9662b2e7dc12c41fb33b40f0b6ce11.js": "/shuffleboard-history/precache-manifest.cb9662b2e7dc12c41fb33b40f0b6ce11.js",
-    "service-worker.js": "/shuffleboard-history/service-worker.js",
-    "static/css/main.452a58c1.chunk.css.map": "/shuffleboard-history/static/css/main.452a58c1.chunk.css.map",
-    "static/js/2.ce8228a0.chunk.js.LICENSE.txt": "/shuffleboard-history/static/js/2.ce8228a0.chunk.js.LICENSE.txt"
+    "main.css": "/shufflebuddy/static/css/main.452a58c1.chunk.css",
+    "main.js": "/shufflebuddy/static/js/main.74e03f72.chunk.js",
+    "main.js.map": "/shufflebuddy/static/js/main.74e03f72.chunk.js.map",
+    "runtime-main.js": "/shufflebuddy/static/js/runtime-main.83479a66.js",
+    "runtime-main.js.map": "/shufflebuddy/static/js/runtime-main.83479a66.js.map",
+    "static/js/2.af4ff96a.chunk.js": "/shufflebuddy/static/js/2.af4ff96a.chunk.js",
+    "static/js/2.af4ff96a.chunk.js.map": "/shufflebuddy/static/js/2.af4ff96a.chunk.js.map",
+    "index.html": "/shufflebuddy/index.html",
+    "precache-manifest.b79f91ba8d7476fd64b7d3ff300db1dd.js": "/shufflebuddy/precache-manifest.b79f91ba8d7476fd64b7d3ff300db1dd.js",
+    "service-worker.js": "/shufflebuddy/service-worker.js",
+    "static/css/main.452a58c1.chunk.css.map": "/shufflebuddy/static/css/main.452a58c1.chunk.css.map",
+    "static/js/2.af4ff96a.chunk.js.LICENSE.txt": "/shufflebuddy/static/js/2.af4ff96a.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.54cf700a.js",
-    "static/js/2.ce8228a0.chunk.js",
+    "static/js/runtime-main.83479a66.js",
+    "static/js/2.af4ff96a.chunk.js",
     "static/css/main.452a58c1.chunk.css",
-    "static/js/main.6d2f232c.chunk.js"
+    "static/js/main.74e03f72.chunk.js"
   ]
 }
