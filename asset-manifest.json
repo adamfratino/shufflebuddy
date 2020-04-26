@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/shuffleboard-history/static/css/main.452a58c1.chunk.css",
+    "main.js": "/shuffleboard-history/static/js/main.6d2f232c.chunk.js",
+    "main.js.map": "/shuffleboard-history/static/js/main.6d2f232c.chunk.js.map",
+    "runtime-main.js": "/shuffleboard-history/static/js/runtime-main.54cf700a.js",
+    "runtime-main.js.map": "/shuffleboard-history/static/js/runtime-main.54cf700a.js.map",
+    "static/js/2.ce8228a0.chunk.js": "/shuffleboard-history/static/js/2.ce8228a0.chunk.js",
+    "static/js/2.ce8228a0.chunk.js.map": "/shuffleboard-history/static/js/2.ce8228a0.chunk.js.map",
+    "index.html": "/shuffleboard-history/index.html",
+    "precache-manifest.cb9662b2e7dc12c41fb33b40f0b6ce11.js": "/shuffleboard-history/precache-manifest.cb9662b2e7dc12c41fb33b40f0b6ce11.js",
+    "service-worker.js": "/shuffleboard-history/service-worker.js",
+    "static/css/main.452a58c1.chunk.css.map": "/shuffleboard-history/static/css/main.452a58c1.chunk.css.map",
+    "static/js/2.ce8228a0.chunk.js.LICENSE.txt": "/shuffleboard-history/static/js/2.ce8228a0.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.54cf700a.js",
+    "static/js/2.ce8228a0.chunk.js",
+    "static/css/main.452a58c1.chunk.css",
+    "static/js/main.6d2f232c.chunk.js"
+  ]
+}
