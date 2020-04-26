@@ -1,7 +1,7 @@
 {
   "name": "shuffleboard-state",
   "version": "0.1.0",
-  "homepage": "http://88mpg.github.io/shuffleboard-history",
+  "homepage": "http://88mpg.github.io/shufflebuddy”,
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
